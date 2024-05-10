@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import "../common/CustomFilter.css";
 
-const CustomerFilter = ({ filter, placeholder }) => {
+const CustomerFilter = ({ filter, handleChange, placeholder }) => {
   const [selectedOptions, setSelectedOptions] = useState([]);
 
   const handleFilter = (selectedOptions) => {
+    handleChange(selectedOptions, placeholder);
     setSelectedOptions(selectedOptions);
   };
 

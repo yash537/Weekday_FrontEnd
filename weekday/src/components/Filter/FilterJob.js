@@ -52,15 +52,29 @@ const FilterJob = ({ handleChange }) => {
 
   return (
     <div className="filter-container">
-      <CustomerFilter filter={JobRoleFilter} placeholder={"Roles"} />
+      <CustomerFilter
+        filter={JobRoleFilter}
+        handleChange={handleChange}
+        placeholder={"Roles"}
+      />
       <CustomerFilter
         filter={noOfEmpFilter}
+        handleChange={handleChange}
         placeholder={"Number_of_Employee"}
       />
-      <CustomerFilter filter={expFilter} placeholder={"Experience"} />
-      <CustomerFilter placeholder={"Remote"} filter={workModeFilter} />
+      <CustomerFilter
+        filter={expFilter}
+        placeholder={"Experience"}
+        handleChange={handleChange}
+      />
+      <CustomerFilter
+        placeholder={"Remote"}
+        handleChange={handleChange}
+        filter={workModeFilter}
+      />
       <CustomerFilter
         filter={salaryFilter}
+        handleChange={handleChange}
         placeholder={"Minimum_Base_Pay_Salary"}
       />
       <Input
