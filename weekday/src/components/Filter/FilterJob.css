@@ -1,0 +1,12 @@
+.filter-container {
+  display: flex;
+  justify-content: center;
+  z-index: 4;
+  margin-bottom: 3rem;
+}
+
+.Search-job {
+  height: 2.2rem;
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
