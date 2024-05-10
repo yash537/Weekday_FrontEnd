@@ -1,0 +1,80 @@
+.job-card {
+  background-color: white;
+  color: black;
+  margin-bottom: 3rem;
+  border-radius: 30px;
+}
+
+.job-card:hover {
+  transition: all 0.2s ease-in-out;
+  transform: scale(1.01);
+}
+
+.card-header {
+  display: flex;
+  column-gap: 1rem;
+}
+
+.company-logo {
+  display: flex;
+  width: 5rem;
+  height: 5rem;
+}
+
+.company-name > a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.company-name > a:hover {
+  text-decoration: underline;
+}
+
+.company-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+}
+
+.apply-btn {
+  width: 100%;
+  background-color: #55efc4;
+  color: black;
+  pointer-events: none;
+}
+.ref-btn {
+  width: 100%;
+  background-color: #4b42d9;
+  color: white;
+  pointer-events: none;
+}
+.company-detail {
+  position: relative;
+}
+
+.company-about {
+  position: relative;
+  max-height: 12rem;
+  overflow: hidden;
+  background-color: #ffffff;
+  z-index: 1;
+  mask-image: linear-gradient(
+    rgb(255, 255, 255),
+    rgb(255, 255, 255),
+    rgba(255, 255, 255, 0)
+  );
+}
+
+.view-job {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  background-color: white;
+  color: #7864e4;
+}
