@@ -43,24 +43,7 @@ const JobList = () => {
       .then((response) => response.json())
       .then((data) => {
         isFilterApplied()
-          ? setJobs((prevJobs) => [
-              ...prevJobs,
-              {
-                jdUid: "cfff35e1-053c-11ef-83d3-06301d0a7178-92018",
-                jdLink: "https://weekday.works",
-                jobDetailsFromCompany:
-                  "This is a sample job and you must have displayed it to understand that its not just some random lorem ipsum text but something which was manually written. Oh well, if random text is what you were looking for then here it is: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages and now in this assignment.",
-                maxJdSalary: 45,
-                minJdSalary: 35,
-                salaryCurrencyCode: "USD",
-                location: "chennai",
-                minExp: 5,
-                maxExp: 6,
-                jobRole: "tech lead",
-                companyName: "Adobe Systems",
-                logoUrl: "https://logo.clearbit.com/adobe.com",
-              },
-            ])
+          ? filterjob(oldJobList)
           : setJobs((prevJobs) => [...prevJobs, ...data.jdList]);
         setHasMore(data.hasMore); // Assuming your API returns a flag indicating if there are more jobs
         setLoading(false);
@@ -78,58 +61,60 @@ const JobList = () => {
     console.log("nknnknknk" + JSON.stringify(oldJobList));
   };
 
+  const filterjob = (oldJobList) => {
+    let _filtedJobs = oldJobList;
+    for (const key in changedFilterOption) {
+      if (changedFilterOption[key].length !== 0) {
+        switch (key) {
+          case "Roles":
+            _filtedJobs = getFilteredRoleBaseJob(
+              changedFilterOption[key],
+              _filtedJobs
+            );
+            console.log("---------------");
+            console.log(_filtedJobs);
+            break;
+          case "Remote":
+            _filtedJobs = getFilteredRemoteJob(
+              changedFilterOption[key],
+              _filtedJobs
+            );
+
+            break;
+          case "Experience":
+            _filtedJobs = getFilteredExperiencedJob(
+              changedFilterOption[key],
+              _filtedJobs
+            );
+
+            break;
+          case "Minimum_Base_Pay_Salary":
+            _filtedJobs = getFilteredSalaryBasedJob(
+              changedFilterOption[key],
+              _filtedJobs
+            );
+            console.log(_filtedJobs.length);
+            break;
+          case "Number_of_Employee":
+            _filtedJobs = getFilteredExployeWiseJob(
+              changedFilterOption[key],
+              _filtedJobs
+            );
+            break;
+          default:
+            break;
+        }
+      }
+    }
+    setJobs(_filtedJobs);
+  };
+
   const handleChange = (filterOptions, filterType) => {
     const _changedFilterOption = changedFilterOption;
     _changedFilterOption[filterType] = filterOptions;
     setChangedFilterOption(_changedFilterOption);
-    let _filtedJobs = oldJobList;
-    console.log(changedFilterOption);
     if (isFilterApplied()) {
-      for (const key in changedFilterOption) {
-        if (changedFilterOption[key].length !== 0) {
-          switch (key) {
-            case "Roles":
-              _filtedJobs = getFilteredRoleBaseJob(
-                changedFilterOption[key],
-                _filtedJobs
-              );
-              console.log("---------------");
-              console.log(_filtedJobs);
-              break;
-            case "Remote":
-              _filtedJobs = getFilteredRemoteJob(
-                changedFilterOption[key],
-                _filtedJobs
-              );
-
-              break;
-            case "Experience":
-              _filtedJobs = getFilteredExperiencedJob(
-                changedFilterOption[key],
-                _filtedJobs
-              );
-
-              break;
-            case "Minimum_Base_Pay_Salary":
-              _filtedJobs = getFilteredSalaryBasedJob(
-                changedFilterOption[key],
-                _filtedJobs
-              );
-              console.log(_filtedJobs.length);
-              break;
-            case "Number_of_Employee":
-              _filtedJobs = getFilteredExployeWiseJob(
-                changedFilterOption[key],
-                _filtedJobs
-              );
-              break;
-            default:
-              break;
-          }
-        }
-      }
-
-      setJobs(_filtedJobs);
+      filterjob(oldJobList);
     } else {
       setJobs(oldJobList);
     }
