@@ -39,7 +39,7 @@ const JobList = () => {
     fetch("https://api.weekday.technology/adhoc/getSampleJdJSON", payload)
       .then((response) => response.json())
       .then((data) => {
-        isFilterApplied()
+        isFilterApplied() || searchQuery
           ? filterjob(oldJobList)
           : setJobList((prevJobs) => [...prevJobs, ...data.jdList]);
         setHasMore(data.hasMore); // Assuming your API returns a flag indicating if there are more jobs
@@ -109,7 +109,7 @@ const JobList = () => {
     _changedFilterOption[filterType] = filterOptions;
     setChangedFilterOption(_changedFilterOption);
     if (isFilterApplied()) {
-      filterjob(oldJobList);
+      filterjob(oldJobList); // checking if any filter apply
     } else {
       setJobList(oldJobList);
     }
