@@ -5,7 +5,7 @@ import "./JobList.css";
 import FilterJob from "../Filter/FilterJob";
 
 const JobList = () => {
-  const [jobList, setJobs] = useState([]);
+  const [jobList, setJobList] = useState([]);
   const [oldJobList, setOldJobList] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -17,14 +17,11 @@ const JobList = () => {
     Minimum_Base_Pay_Salary: [],
     Number_of_Employee: [],
   });
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     loadJobs();
-  }, [page]); // Call loadJobs whenever page changes
-  // useEffect(() => {
-  //   console.log("jobslists");
-  //   console.log(jobs);
-  // }, [jobs]);
+  }, [page]);
 
   const loadJobs = () => {
     setLoading(true);
@@ -44,21 +41,18 @@ const JobList = () => {
       .then((data) => {
         isFilterApplied()
           ? filterjob(oldJobList)
-          : setJobs((prevJobs) => [...prevJobs, ...data.jdList]);
+          : setJobList((prevJobs) => [...prevJobs, ...data.jdList]);
         setHasMore(data.hasMore); // Assuming your API returns a flag indicating if there are more jobs
         setLoading(false);
         return data;
       })
       .then((data) => {
-        console.log(data);
         setOldJobList((prevJobs) => [...prevJobs, ...data.jdList]);
       })
       .catch((error) => {
         console.error("Error fetching jobs:", error);
         setLoading(false);
       });
-
-    console.log("nknnknknk" + JSON.stringify(oldJobList));
   };
 
   const filterjob = (oldJobList) => {
@@ -71,8 +65,6 @@ const JobList = () => {
               changedFilterOption[key],
               _filtedJobs
             );
-            console.log("---------------");
-            console.log(_filtedJobs);
             break;
           case "Remote":
             _filtedJobs = getFilteredRemoteJob(
@@ -93,7 +85,6 @@ const JobList = () => {
               changedFilterOption[key],
               _filtedJobs
             );
-            console.log(_filtedJobs.length);
             break;
           case "Number_of_Employee":
             _filtedJobs = getFilteredExployeWiseJob(
@@ -101,12 +92,16 @@ const JobList = () => {
               _filtedJobs
             );
             break;
+
           default:
             break;
         }
       }
     }
-    setJobs(_filtedJobs);
+    if (searchQuery.trim() !== "") {
+      _filtedJobs = filterJobsBySearch(_filtedJobs);
+    }
+    setJobList(_filtedJobs);
   };
 
   const handleChange = (filterOptions, filterType) => {
@@ -116,8 +111,13 @@ const JobList = () => {
     if (isFilterApplied()) {
       filterjob(oldJobList);
     } else {
-      setJobs(oldJobList);
+      setJobList(oldJobList);
     }
+  };
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+    filterjob(oldJobList);
   };
 
   const handleScroll = () => {
@@ -138,6 +138,12 @@ const JobList = () => {
       }
     }
     return false;
+  };
+
+  const filterJobsBySearch = (list) => {
+    return list.filter((job) => {
+      return job.companyName.toLowerCase().includes(searchQuery.toLowerCase());
+    });
   };
 
   const getFilteredExperiencedJob = (option, list) => {
@@ -199,7 +205,12 @@ const JobList = () => {
     <>
       <StyledEngineProvider injectFirst>
         <CssVarsProvider>
-          <FilterJob handleChange={handleChange} />
+          <FilterJob
+            handleChange={handleChange}
+            jobList={jobList}
+            setJobList={setJobList}
+            handleSearch={handleSearch}
+          />
           <div className="job-list ">
             {jobList.map((job, index) => (
               <JobCard job={job} key={job.jdUid + index} />

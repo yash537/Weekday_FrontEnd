@@ -3,11 +3,15 @@ import CustomerFilter from "../../common/CustomFilter";
 import "./FilterJob.css";
 import Input from "@mui/joy/Input";
 
-const FilterJob = ({ handleChange }) => {
+const FilterJob = ({ handleChange, handleSearch }) => {
   const JobRoleFilter = [
-    { value: "ios", label: "ios" },
-    { value: "android", label: "android" },
-    { value: "JAVA", label: "JAVA" },
+    { value: "ios", label: "iOS" },
+    { value: "android", label: "Android" },
+    { value: "JAVA", label: "Java" },
+    { value: "frontend", label: "Frontend" },
+    { value: "fullstack", label: "Fullstack" },
+    { value: "flutter", label: "Flutter" },
+    { value: "tech-lead", label: "Tech Lead" },
   ];
 
   const noOfEmpFilter = [
@@ -82,6 +86,7 @@ const FilterJob = ({ handleChange }) => {
         size="sm"
         placeholder="Search Company Name"
         color="neutral"
+        onKeyUp={handleSearch}
       />
     </div>
   );
